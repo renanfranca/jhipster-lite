@@ -763,6 +763,23 @@ class GradleCommandHandlerTest {
     }
 
     @Test
+    void shouldRemoveEntryInLibrariesSectionAndEntryInVersionsSection() {
+      GradleCommandHandler gradleCommandHandler = new GradleCommandHandler(
+        Indentation.DEFAULT,
+        projectFolder,
+        emptyModuleContext(),
+        files,
+        fileReplacer
+      );
+      gradleCommandHandler.handle(new SetVersion(jsonWebTokenVersion()));
+      gradleCommandHandler.handle(new AddDirectJavaDependency(dependencyWithVersionAndExclusion()));
+
+      gradleCommandHandler.handle(new RemoveDirectJavaDependency(dependencyWithVersionAndExclusion().id()));
+
+      assertThat(versionCatalogContent(projectFolder)).doesNotContain("json-web-token = \"1.2.3\"");
+    }
+
+    @Test
     void shouldRemoveDependencyInBuildGradleFile() {
       GradleCommandHandler gradleCommandHandler = new GradleCommandHandler(
         Indentation.DEFAULT,
