@@ -772,9 +772,9 @@ class GradleCommandHandlerTest {
         fileReplacer
       );
       gradleCommandHandler.handle(new SetVersion(jsonWebTokenVersion()));
-      gradleCommandHandler.handle(new AddDirectJavaDependency(dependencyWithVersionAndExclusion()));
+      gradleCommandHandler.handle(new AddDirectJavaDependency(dependencyWithVersion()));
 
-      gradleCommandHandler.handle(new RemoveDirectJavaDependency(dependencyWithVersionAndExclusion().id()));
+      gradleCommandHandler.handle(new RemoveDirectJavaDependency(dependencyWithVersion().id()));
 
       assertThat(versionCatalogContent(projectFolder)).doesNotContain("json-web-token = \"1.2.3\"");
     }

@@ -274,6 +274,10 @@ public final class JHipsterModulesFixture {
     return javaDependency().groupId("org.springframework.boot").artifactId("spring-boot-starter").build();
   }
 
+  public static JavaDependency dependencyWithVersion() {
+    return javaDependency().groupId("io.jsonwebtoken").artifactId("jjwt-jackson").versionSlug("json-web-token").build();
+  }
+
   public static JavaDependency dependencyWithVersionAndExclusion() {
     return javaDependency()
       .groupId("io.jsonwebtoken")
