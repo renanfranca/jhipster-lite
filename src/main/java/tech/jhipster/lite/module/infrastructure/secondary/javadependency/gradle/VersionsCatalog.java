@@ -15,6 +15,7 @@ import org.apache.commons.lang3.StringUtils;
 import tech.jhipster.lite.module.domain.gradleplugin.GradleCommunityPlugin;
 import tech.jhipster.lite.module.domain.gradleplugin.GradlePluginSlug;
 import tech.jhipster.lite.module.domain.javabuild.DependencySlug;
+import tech.jhipster.lite.module.domain.javabuild.VersionSlug;
 import tech.jhipster.lite.module.domain.javadependency.DependencyId;
 import tech.jhipster.lite.module.domain.javadependency.JavaDependency;
 import tech.jhipster.lite.module.domain.javadependency.JavaDependencyVersion;
@@ -80,9 +81,19 @@ public class VersionsCatalog {
   }
 
   public void removeLibrary(DependencyId dependency) {
-    libraryEntriesMatchingDependency(dependency).forEach(
-      libraryConfig -> tomlConfigFile.remove(List.of(LIBRARIES_TOML_KEY, libraryConfig.getKey()))
-    );
+    libraryEntriesMatchingDependency(dependency).forEach(libraryConfig -> {
+      tomlConfigFile.remove(List.of(LIBRARIES_TOML_KEY, libraryConfig.getKey()));
+      VersionSlug.of(versionReference(libraryConfig)).ifPresent(this::removeVersion);
+    });
+    save();
+  }
+
+  private static String versionReference(Entry libraryConfig) {
+    return ((Config) libraryConfig.getValue()).get("version.ref");
+  }
+
+  private void removeVersion(VersionSlug versionSlug) {
+    tomlConfigFile.remove(List.of(VERSIONS_TOML_KEY, versionSlug.slug()));
     save();
   }
 
