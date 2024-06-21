@@ -942,6 +942,38 @@ class GradleCommandHandlerTest {
           """
         );
     }
+
+    @Test
+    void shouldRemoveEntryInLibrariesSectionAndEntryInVersionsSectionWhenRemovedDependencyIsInBuildGradleProfileFile() {
+      JHipsterProjectFolder projectFolder = projectFrom("src/test/resources/projects/gradle-with-local-profile");
+      GradleCommandHandler gradleCommandHandler = new GradleCommandHandler(
+        Indentation.DEFAULT,
+        projectFolder,
+        emptyModuleContext(),
+        files,
+        fileReplacer
+      );
+      gradleCommandHandler.handle(new SetVersion(jsonWebTokenVersion()));
+      gradleCommandHandler.handle(new AddDirectJavaDependency(dependencyWithVersion(), localBuildProfile()));
+
+      gradleCommandHandler.handle(new RemoveDirectJavaDependency(dependencyWithVersion().id(), localBuildProfile()));
+
+      assertThat(versionCatalogContent(projectFolder))
+        .doesNotContain("json-web-token = \"1.2.3\"")
+        .doesNotContain("[libraries.jjwt-jackson]")
+        .doesNotContain(
+          """
+          \t\tname = "jjwt-jackson"
+          \t\tgroup = "io.jsonwebtoken"\
+          """
+        )
+        .doesNotContain("[libraries.jjwt-jackson.version]")
+        .doesNotContain(
+          """
+          \t\t\tref = "json-web-token"
+          """
+        );
+    }
   }
 
   @Nested
