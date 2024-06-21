@@ -776,7 +776,21 @@ class GradleCommandHandlerTest {
 
       gradleCommandHandler.handle(new RemoveDirectJavaDependency(dependencyWithVersion().id()));
 
-      assertThat(versionCatalogContent(projectFolder)).doesNotContain("json-web-token = \"1.2.3\"");
+      assertThat(versionCatalogContent(projectFolder))
+        .doesNotContain("json-web-token = \"1.2.3\"")
+        .doesNotContain("[libraries.jjwt-jackson]")
+        .doesNotContain(
+          """
+          \t\tname = "jjwt-jackson"
+          \t\tgroup = "io.jsonwebtoken"\
+          """
+        )
+        .doesNotContain("[libraries.jjwt-jackson.version]")
+        .doesNotContain(
+          """
+          \t\t\tref = "json-web-token"
+          """
+        );
     }
 
     @Test
