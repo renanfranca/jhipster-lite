@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-
+# testing-ignore-it
 show_syntax() {
   echo "Usage: $0 <application> <java-build-tool> <spring-configuration-format>" >&2
   exit 1
