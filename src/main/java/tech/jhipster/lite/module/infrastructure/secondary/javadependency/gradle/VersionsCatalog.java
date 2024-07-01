@@ -83,9 +83,31 @@ public class VersionsCatalog {
   public void removeLibrary(DependencyId dependency) {
     libraryEntriesMatchingDependency(dependency).forEach(libraryConfig -> {
       tomlConfigFile.remove(List.of(LIBRARIES_TOML_KEY, libraryConfig.getKey()));
-      VersionSlug.of(versionReference(libraryConfig)).ifPresent(this::removeVersion);
+      if (versionUnused(tomlConfigFile, libraryConfig)) {
+        VersionSlug.of(versionReference(libraryConfig)).ifPresent(this::removeVersion);
+      }
     });
     save();
+  }
+
+  private static boolean versionUnused(FileConfig tomlConfigFile, Entry libraryConfig) {
+    return tomlConfigFile
+      .entrySet()
+      .stream()
+      .filter(entry -> entry.getKey().equals(LIBRARIES_TOML_KEY))
+      .map(Entry::getValue)
+      .filter(Config.class::isInstance)
+      .map(Config.class::cast)
+      .map(Config::entrySet)
+      .flatMap(Collection::stream)
+      .noneMatch(versionShouldMatch(versionReference(libraryConfig)));
+  }
+
+  private static Predicate<Entry> versionShouldMatch(String versionReference) {
+    return libraryConfig -> {
+      Object versionProperty = versionReference(libraryConfig);
+      return versionProperty.equals(versionReference);
+    };
   }
 
   private static String versionReference(Entry libraryConfig) {
