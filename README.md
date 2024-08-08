@@ -1,3 +1,4 @@
+#No changes
 [![Logo JHipster Lite][jhipster-image]][jhipster-url]
 
 # JHipster Lite ⚡
