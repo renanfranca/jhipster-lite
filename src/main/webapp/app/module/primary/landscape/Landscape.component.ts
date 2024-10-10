@@ -91,6 +91,19 @@ export default defineComponent({
       highlightModule(searchQuery.value);
     };
 
+    const scrollToHighlightedModule = () => {
+      if (highlightedModule.value) {
+        const element = landscapeElements.value.get(highlightedModule.value.get());
+        if (element) {
+          element.scrollIntoView({
+            behavior: 'smooth',
+            block: 'center',
+            inline: 'center'
+          });
+        }
+      }
+    };
+
     const highlightModule = (query: string) => {
       if (!query) {
         highlightedModule.value = null;
@@ -103,6 +116,8 @@ export default defineComponent({
       );
 
       highlightedModule.value = foundModule ? new ModuleSlug(foundModule) : null;
+      
+      nextTick(scrollToHighlightedModule);
     };
 
     watch(searchQuery, (newValue) => {

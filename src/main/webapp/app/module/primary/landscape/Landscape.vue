@@ -47,7 +47,24 @@
 }
 
 .-search-highlighted {
-  box-shadow: 0 0 0 2px #ffd700;
+  box-shadow: 0 0 0 4px #ffd700;
   z-index: 1;
+  transition: box-shadow 0.3s ease-in-out;
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(255, 215, 0, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(255, 215, 0, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(255, 215, 0, 0);
+  }
+}
+
+.-search-highlighted {
+  animation: pulse 1.5s infinite;
 }
 </style>
