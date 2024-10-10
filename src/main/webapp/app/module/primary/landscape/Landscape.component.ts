@@ -22,7 +22,7 @@ import { LandscapeSelectionElement } from '@/module/domain/landscape/LandscapeSe
 import { ALERT_BUS } from '@/shared/alert/application/AlertProvider';
 import { IconVue } from '@/shared/icon/infrastructure/primary';
 import { Loader } from '@/shared/loader/infrastructure/primary/Loader';
-import { computed, defineComponent, nextTick, onBeforeUnmount, onMounted, Ref, ref } from 'vue';
+import { computed, defineComponent, nextTick, onBeforeUnmount, onMounted, Ref, ref, watch } from 'vue';
 import { castValue, empty } from '../PropertyValue';
 import { LandscapeLoaderVue } from '../landscape-loader';
 import { LandscapeMiniMapVue } from '../landscape-minimap';
@@ -83,6 +83,31 @@ export default defineComponent({
     const currentScrollY: Ref<number> = ref(0);
 
     const operationInProgress = ref(false);
+
+    const searchQuery = ref('');
+    const highlightedModule = ref<ModuleSlug | null>(null);
+
+    const performSearch = () => {
+      highlightModule(searchQuery.value);
+    };
+
+    const highlightModule = (query: string) => {
+      if (!query) {
+        highlightedModule.value = null;
+        return;
+      }
+
+      const lowercaseQuery = query.toLowerCase();
+      const foundModule = Array.from(landscapeElements.value.keys()).find(
+        (key) => key.toLowerCase().includes(lowercaseQuery)
+      );
+
+      highlightedModule.value = foundModule ? new ModuleSlug(foundModule) : null;
+    };
+
+    watch(searchQuery, (newValue) => {
+      highlightModule(newValue);
+    });
 
     const selectedPreset = ref<Preset | null>(null);
     const selectedPresetName = computed(() => selectedPreset.value?.name ?? '');
@@ -308,8 +333,16 @@ export default defineComponent({
         selectionClass(module) +
         applicationClass(module) +
         flavorClass() +
-        anchorPointClass(module)
+        anchorPointClass(module) +
+        searchHighlightClass(module)
       );
+    };
+
+    const searchHighlightClass = (module: LandscapeElementId): string => {
+      if (highlightedModule.value && module.get() === highlightedModule.value.get()) {
+        return ' -search-highlighted';
+      }
+      return '';
     };
 
     const operationInProgressClass = (): string => {
@@ -633,6 +666,8 @@ export default defineComponent({
       grabbing,
       canLoadMiniMap,
       selectedPresetName,
+      searchQuery,
+      performSearch,
     };
   },
 });

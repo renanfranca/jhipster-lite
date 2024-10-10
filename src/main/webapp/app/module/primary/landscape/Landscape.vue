@@ -45,4 +45,9 @@
 .jhipster-landscape {
   padding-top: 80px; /* Adjust this value based on the height of your search bar */
 }
+
+.-search-highlighted {
+  box-shadow: 0 0 0 2px #ffd700;
+  z-index: 1;
+}
 </style>
