@@ -47,9 +47,10 @@
 }
 
 .-search-highlighted {
-  box-shadow: 0 0 0 4px #ffd700;
+  position: relative;
+  box-shadow: 0 0 0 3px #ffd700; /* Solid gold border */
   z-index: 1;
-  transition: box-shadow 0.3s ease-in-out;
+  background-color: rgba(255, 215, 0, 0.1); /* Light gold background */
 }
 
 @keyframes pulse {
@@ -62,9 +63,5 @@
   100% {
     box-shadow: 0 0 0 0 rgba(255, 215, 0, 0);
   }
-}
-
-.-search-highlighted {
-  animation: pulse 1.5s infinite;
 }
 </style>
