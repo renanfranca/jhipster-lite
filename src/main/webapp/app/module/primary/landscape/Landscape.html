@@ -1,13 +1,16 @@
 <LandscapeLoaderVue v-if="levels.isLoading()" />
 <div class="jhipster-landscape jhlite-menu-content-template" v-else data-selector="landscape">
   <div class="jhipster-landscape-search">
-    <input 
-      type="text" 
-      class="jhipster-landscape-search-input" 
-      placeholder="Search modules..." 
-      v-model="searchQuery"
-      data-selector="landscape-search-input"
-    >
+    <div class="jhlite-field--field">
+      <input
+        type="text"
+        id="landscape-search"
+        class="jhlite-input-text"
+        placeholder="Search modules..."
+        v-model="searchQuery"
+        data-selector="landscape-search-input"
+      />
+    </div>
     <button 
       class="jhipster-landscape-search-button jhlite-button-main" 
       @click="performSearch"
