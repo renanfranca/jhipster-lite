@@ -48,20 +48,29 @@
 
 .-search-highlighted {
   position: relative;
-  box-shadow: 0 0 0 3px #ffd700; /* Solid gold border */
+  box-shadow: 
+    0 0 0 3px #ffd700, /* Solid gold border */
+    0 0 0 6px rgba(255, 215, 0, 0.5); /* Outer glow */
   z-index: 1;
   background-color: rgba(255, 215, 0, 0.1); /* Light gold background */
+  animation: pulse 2s infinite;
 }
 
 @keyframes pulse {
   0% {
-    box-shadow: 0 0 0 0 rgba(255, 215, 0, 0.7);
+    box-shadow: 
+      0 0 0 3px #ffd700,
+      0 0 0 6px rgba(255, 215, 0, 0.7);
   }
   70% {
-    box-shadow: 0 0 0 10px rgba(255, 215, 0, 0);
+    box-shadow: 
+      0 0 0 3px #ffd700,
+      0 0 0 12px rgba(255, 215, 0, 0);
   }
   100% {
-    box-shadow: 0 0 0 0 rgba(255, 215, 0, 0);
+    box-shadow: 
+      0 0 0 3px #ffd700,
+      0 0 0 6px rgba(255, 215, 0, 0);
   }
 }
 </style>
