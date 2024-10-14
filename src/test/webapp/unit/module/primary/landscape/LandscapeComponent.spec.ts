@@ -3,7 +3,7 @@ import {
   LANDSCAPE_SCROLLER,
   MODULE_PARAMETERS_REPOSITORY,
   MODULES_REPOSITORY,
-  PROJECT_FOLDERS_REPOSITORY
+  PROJECT_FOLDERS_REPOSITORY,
 } from '@/module/application/ModuleProvider';
 import { ModuleParametersRepository } from '@/module/domain/ModuleParametersRepository';
 import { ModuleSlug } from '@/module/domain/ModuleSlug';
@@ -21,12 +21,7 @@ import { stubAlertBus } from '../../../shared/alert/domain/AlertBus.fixture';
 import { wrappedElement } from '../../../WrappedElement';
 import { defaultLandscape } from '../../domain/landscape/Landscape.fixture';
 import { ModuleParametersRepositoryStub, stubModuleParametersRepository } from '../../domain/ModuleParameters.fixture';
-import {
-  defaultPresets,
-  ModulesRepositoryStub,
-  projectHistoryWithInit,
-  stubModulesRepository
-} from '../../domain/Modules.fixture';
+import { defaultPresets, ModulesRepositoryStub, projectHistoryWithInit, stubModulesRepository } from '../../domain/Modules.fixture';
 import { ProjectFoldersRepositoryStub, stubProjectFoldersRepository } from '../../domain/ProjectFolders.fixture';
 import { stubWindow } from '../GlobalWindow.fixture';
 
@@ -1209,7 +1204,7 @@ describe('Landscape', () => {
   });
 
   describe('Search module bar', () => {
-    it ('should render the search module bar', async () => {
+    it('should render the search module bar', async () => {
       const wrapper = await componentWithLandscape();
 
       expect(wrapper.find(wrappedElement('landscape-search-input')).exists()).toBe(true);
@@ -1219,11 +1214,11 @@ describe('Landscape', () => {
       const wrapper = await componentWithLandscape();
 
       const landscapeSearchInput = wrapper.find(wrappedElement('landscape-search-input'));
-      landscapeSearchInput.setValue('prettier');
-      landscapeSearchInput.trigger('change');
+      await landscapeSearchInput.setValue('prettier');
 
-      expect(wrapper.find(wrappedElement('prettier-module')).classes()).toContain('-selectable-highlighted');
-    })
+      const prettierModuleClasses = wrapper.find(wrappedElement('prettier-module')).classes();
+      expect(prettierModuleClasses).toContain('-search-highlighted');
+    });
   });
 });
 
