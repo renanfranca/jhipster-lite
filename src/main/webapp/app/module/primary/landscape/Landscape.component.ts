@@ -473,11 +473,7 @@ export default defineComponent({
         return true;
       }
 
-      if (missingMandatoryProperty()) {
-        return true;
-      }
-
-      return false;
+      return missingMandatoryProperty();
     };
 
     const selectedNewModulesCount = (): number => {
