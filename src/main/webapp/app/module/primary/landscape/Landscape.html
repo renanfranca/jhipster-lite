@@ -26,6 +26,19 @@
     <LandscapePresetConfigurationVue :selectedPresetName="selectedPresetName" @selected="selectModulesFromPreset" />
   </div>
 
+  <div class="jhipster-landscape-search-container">
+    <div class="jhipster-landscape-search">
+      <div class="jhlite-field--field">
+        <input
+          type="text"
+          class="jhlite-input-text"
+          placeholder="Search modules..."
+          data-selector="landscape-search-input"
+        />
+      </div>
+    </div>
+  </div>
+
   <div
     :class="landscapeClass()"
     ref="landscapeContainer"
