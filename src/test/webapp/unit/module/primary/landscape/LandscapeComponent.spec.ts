@@ -1204,7 +1204,7 @@ describe('Landscape', () => {
   });
 
   describe('Search module bar', () => {
-    it ('should render the search bar', async () => {
+    it ('should render the search module bar', async () => {
       const wrapper = await componentWithLandscape();
 
       expect(wrapper.find(wrappedElement('landscape-search-input')).exists()).toBe(true);
