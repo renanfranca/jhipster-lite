@@ -22,7 +22,7 @@ import { LandscapeSelectionElement } from '@/module/domain/landscape/LandscapeSe
 import { ALERT_BUS } from '@/shared/alert/application/AlertProvider';
 import { IconVue } from '@/shared/icon/infrastructure/primary';
 import { Loader } from '@/shared/loader/infrastructure/primary/Loader';
-import { computed, defineComponent, nextTick, onBeforeUnmount, onMounted, Ref, ref, watch } from 'vue';
+import { computed, defineComponent, nextTick, onBeforeUnmount, onMounted, Ref, ref } from 'vue';
 import { castValue, empty } from '../PropertyValue';
 import { LandscapeLoaderVue } from '../landscape-loader';
 import { LandscapeMiniMapVue } from '../landscape-minimap';
@@ -87,7 +87,6 @@ export default defineComponent({
     const selectedPreset = ref<Preset | null>(null);
     const selectedPresetName = computed(() => selectedPreset.value?.name ?? '');
 
-    const searchQuery = ref('');
     const highlightedModule = ref<ModuleSlug | null>(null);
 
     onMounted(() => {
@@ -602,8 +601,8 @@ export default defineComponent({
     const isInputActiveElement = (): boolean => {
       return document?.activeElement?.tagName === 'INPUT';
     };
+
     const highlightModule = (query: string) => {
-      console.log('highlightModule', query);
       if (!query) {
         highlightedModule.value = null;
         return;
@@ -615,9 +614,9 @@ export default defineComponent({
       highlightedModule.value = foundModule ? new ModuleSlug(foundModule) : null;
     };
 
-    watch(searchQuery, newValue => {
-      highlightModule(newValue);
-    });
+    const performSearch = (query: string) => {
+      highlightModule(query);
+    };
 
     return {
       levels,
@@ -660,7 +659,7 @@ export default defineComponent({
       grabbing,
       canLoadMiniMap,
       selectedPresetName,
-      searchQuery,
+      performSearch,
     };
   },
 });
