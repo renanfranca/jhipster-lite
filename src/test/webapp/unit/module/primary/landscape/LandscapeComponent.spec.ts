@@ -1202,6 +1202,14 @@ describe('Landscape', () => {
       presetDropdown.trigger('change');
     };
   });
+
+  describe('Search module bar', () => {
+    it ('should render the search bar', () => {
+      const wrapper = wrap();
+
+      expect(wrapper.find(wrappedElement('landscape-search-input')).exists()).toBe(true);
+    });
+  });
 });
 
 const assertSelectableHighlightedConnectorsCount = (wrapper: VueWrapper, count: number): void => {
