@@ -1248,25 +1248,33 @@ describe('Landscape', () => {
 
     it('should scroll the screen to the highlighted module if it is not visible within the current viewport', async () => {
       const { wrapper, searchInput, landscapeScroller } = await setupSearchTest();
-      mockElementOutOfViewport();
+
+      const mockRect = mockElementOutOfViewport();
 
       await performSearch(searchInput, 'prettier');
       await wrapper.vm.$nextTick();
 
       const prettierModule = wrapper.find(wrappedElement('prettier-module')).element;
 
+      expect(mockRect).toHaveBeenCalled();
       expect(landscapeScroller.scrollIntoView).toHaveBeenCalledTimes(1);
       expect(landscapeScroller.scrollIntoView).toHaveBeenCalledWith(prettierModule);
+
+      mockRect.mockRestore();
     });
 
     it('should not scroll if the highlighted module is already visible', async () => {
       const { wrapper, searchInput, landscapeScroller } = await setupSearchTest();
-      mockElementInViewport();
+
+      const mockRect = mockElementInViewport();
 
       await performSearch(searchInput, 'prettier');
       await wrapper.vm.$nextTick();
 
+      expect(mockRect).toHaveBeenCalled();
       expect(landscapeScroller.scrollIntoView).not.toHaveBeenCalled();
+
+      mockRect.mockRestore();
     });
 
     const setupSearchTest = async () => {
@@ -1281,19 +1289,33 @@ describe('Landscape', () => {
       return { wrapper, searchInput, landscapeScroller };
     };
 
-    const mockElementOutOfViewport = (Element.prototype.getBoundingClientRect = vi.fn().mockReturnValue({
-      top: -100,
-      bottom: -50,
-      left: 0,
-      right: 100,
-    }));
+    const mockElementOutOfViewport = () => {
+      return vi.spyOn(Element.prototype, 'getBoundingClientRect').mockImplementation(() => ({
+        top: -100,
+        bottom: -50,
+        left: 0,
+        right: 100,
+        width: 100,
+        height: 50,
+        x: 0,
+        y: -100,
+        toJSON: () => '{"top":-100,"bottom":-50,"left":0,"right":100,"width":100,"height":50,"x":0,"y":-100}'
+      }));
+    };
 
-    const mockElementInViewport = (Element.prototype.getBoundingClientRect = vi.fn().mockReturnValue({
-      top: 100,
-      bottom: 200,
-      left: 0,
-      right: 100,
-    }));
+    const mockElementInViewport = () => {
+      return vi.spyOn(Element.prototype, 'getBoundingClientRect').mockImplementation(() => ({
+        top: 100,
+        bottom: 200,
+        left: 0,
+        right: 100,
+        width: 100,
+        height: 100,
+        x: 0,
+        y: 100,
+        toJSON: () => '{"top":100,"bottom":200,"left":0,"right":100,"width":100,"height":100,"x":0,"y":100}'
+      }));
+    };
 
     const performSearch = async (searchInput: DOMWrapper<Element>, searchTerm: string) => {
       await searchInput.setValue(searchTerm);
