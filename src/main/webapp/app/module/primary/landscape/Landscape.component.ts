@@ -612,12 +612,17 @@ export default defineComponent({
       nextTick().then(scrollToHighlightedModule);
     };
 
-    const scrollToHighlightedModule = () : void => {
+    const scrollToHighlightedModule = (): void => {
       if (highlightedModule.value) {
         const moduleElement = landscapeElements.value.get(highlightedModule.value.get());
         if (moduleElement) {
           const rect = moduleElement.getBoundingClientRect();
-          if (rect.top < 0 || rect.bottom > window.innerHeight) {
+          const containerRect = landscapeContainer.value.getBoundingClientRect();
+
+          const verticallyOutOfView = rect.top < containerRect.top || rect.bottom > containerRect.bottom;
+          const horizontallyOutOfView = rect.left < containerRect.left || rect.right > containerRect.right;
+
+          if (verticallyOutOfView || horizontallyOutOfView) {
             landscapeScroller.scrollIntoView(moduleElement);
           }
         }

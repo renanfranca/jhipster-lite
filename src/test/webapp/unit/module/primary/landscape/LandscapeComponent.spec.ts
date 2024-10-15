@@ -1246,10 +1246,11 @@ describe('Landscape', () => {
       });
     });
 
-    it('should scroll the screen to the highlighted module if it is not visible within the current viewport', async () => {
+    it('should scroll vertically and horizontally to the highlighted module if it is not visible within the current viewport', async () => {
       const { wrapper, searchInput, landscapeScroller } = await setupSearchTest();
 
       const mockRect = mockElementOutOfViewport();
+      const mockContainerRect = mockContainerViewport();
 
       await performSearch(searchInput, 'prettier');
       await wrapper.vm.$nextTick();
@@ -1257,24 +1258,29 @@ describe('Landscape', () => {
       const prettierModule = wrapper.find(wrappedElement('prettier-module')).element;
 
       expect(mockRect).toHaveBeenCalled();
+      expect(mockContainerRect).toHaveBeenCalled();
       expect(landscapeScroller.scrollIntoView).toHaveBeenCalledTimes(1);
       expect(landscapeScroller.scrollIntoView).toHaveBeenCalledWith(prettierModule);
 
       mockRect.mockRestore();
+      mockContainerRect.mockRestore();
     });
 
     it('should not scroll if the highlighted module is already visible', async () => {
       const { wrapper, searchInput, landscapeScroller } = await setupSearchTest();
 
       const mockRect = mockElementInViewport();
+      const mockContainerRect = mockContainerViewport();
 
       await performSearch(searchInput, 'prettier');
       await wrapper.vm.$nextTick();
 
       expect(mockRect).toHaveBeenCalled();
+      expect(mockContainerRect).toHaveBeenCalled();
       expect(landscapeScroller.scrollIntoView).not.toHaveBeenCalled();
 
       mockRect.mockRestore();
+      mockContainerRect.mockRestore();
     });
 
     const setupSearchTest = async () => {
@@ -1286,20 +1292,32 @@ describe('Landscape', () => {
 
       const searchInput = wrapper.find(wrappedElement('landscape-search-input'));
 
-      return { wrapper, searchInput, landscapeScroller };
+      const mockContainerRect = vi.spyOn(HTMLElement.prototype, 'getBoundingClientRect').mockImplementation(() => ({
+        top: 0,
+        bottom: 1000,
+        left: 0,
+        right: 1000,
+        width: 1000,
+        height: 1000,
+        x: 0,
+        y: 0,
+        toJSON: () => '{"top":0,"bottom":1000,"left":0,"right":1000,"width":1000,"height":1000,"x":0,"y":0}'
+      }));
+
+      return { wrapper, searchInput, landscapeScroller, mockContainerRect };
     };
 
     const mockElementOutOfViewport = () => {
       return vi.spyOn(Element.prototype, 'getBoundingClientRect').mockImplementation(() => ({
         top: -100,
         bottom: -50,
-        left: 0,
-        right: 100,
+        left: -100,
+        right: 0,
         width: 100,
         height: 50,
-        x: 0,
+        x: -100,
         y: -100,
-        toJSON: () => '{"top":-100,"bottom":-50,"left":0,"right":100,"width":100,"height":50,"x":0,"y":-100}'
+        toJSON: () => '{"top":-100,"bottom":-50,"left":-100,"right":0,"width":100,"height":50,"x":-100,"y":-100}'
       }));
     };
 
@@ -1307,13 +1325,27 @@ describe('Landscape', () => {
       return vi.spyOn(Element.prototype, 'getBoundingClientRect').mockImplementation(() => ({
         top: 100,
         bottom: 200,
-        left: 0,
-        right: 100,
+        left: 100,
+        right: 200,
         width: 100,
         height: 100,
-        x: 0,
+        x: 100,
         y: 100,
-        toJSON: () => '{"top":100,"bottom":200,"left":0,"right":100,"width":100,"height":100,"x":0,"y":100}'
+        toJSON: () => '{"top":100,"bottom":200,"left":100,"right":200,"width":100,"height":100,"x":100,"y":100}'
+      }));
+    };
+
+    const mockContainerViewport = () => {
+      return vi.spyOn(HTMLElement.prototype, 'getBoundingClientRect').mockImplementation(() => ({
+        top: 0,
+        bottom: 1000,
+        left: 0,
+        right: 1000,
+        width: 1000,
+        height: 1000,
+        x: 0,
+        y: 0,
+        toJSON: () => '{"top":0,"bottom":1000,"left":0,"right":1000,"width":1000,"height":1000,"x":0,"y":0}'
       }));
     };
 
