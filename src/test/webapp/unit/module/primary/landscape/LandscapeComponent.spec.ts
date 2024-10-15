@@ -48,6 +48,7 @@ const stubApplicationListener = (): ApplicationListenerStub => ({
 
 const stubLandscapeScroller = (): any => ({
   scroll: vi.fn(),
+  scrollIntoView: vi.fn(),
 });
 
 interface WrapperOptions {
@@ -1245,11 +1246,54 @@ describe('Landscape', () => {
       });
     });
 
+    it('should scroll the screen to the highlighted module if it is not visible within the current viewport', async () => {
+      const { wrapper, searchInput, landscapeScroller } = await setupSearchTest();
+      mockElementOutOfViewport();
+
+      await performSearch(searchInput, 'prettier');
+      await wrapper.vm.$nextTick();
+
+      const prettierModule = wrapper.find(wrappedElement('prettier-module')).element;
+
+      expect(landscapeScroller.scrollIntoView).toHaveBeenCalledTimes(1);
+      expect(landscapeScroller.scrollIntoView).toHaveBeenCalledWith(prettierModule);
+    });
+
+    it('should not scroll if the highlighted module is already visible', async () => {
+      const { wrapper, searchInput, landscapeScroller } = await setupSearchTest();
+      mockElementInViewport();
+
+      await performSearch(searchInput, 'prettier');
+      await wrapper.vm.$nextTick();
+
+      expect(landscapeScroller.scrollIntoView).not.toHaveBeenCalled();
+    });
+
     const setupSearchTest = async () => {
-      const wrapper = await componentWithLandscape();
+      const landscapeScroller = stubLandscapeScroller();
+      const modules = repositoryWithLandscape();
+      const wrapper = wrap({ modules, landscapeScroller });
+
+      await flushPromises();
+
       const searchInput = wrapper.find(wrappedElement('landscape-search-input'));
-      return { wrapper, searchInput };
+
+      return { wrapper, searchInput, landscapeScroller };
     };
+
+    const mockElementOutOfViewport = (Element.prototype.getBoundingClientRect = vi.fn().mockReturnValue({
+      top: -100,
+      bottom: -50,
+      left: 0,
+      right: 100,
+    }));
+
+    const mockElementInViewport = (Element.prototype.getBoundingClientRect = vi.fn().mockReturnValue({
+      top: 100,
+      bottom: 200,
+      left: 0,
+      right: 100,
+    }));
 
     const performSearch = async (searchInput: DOMWrapper<Element>, searchTerm: string) => {
       await searchInput.setValue(searchTerm);
