@@ -1219,6 +1219,19 @@ describe('Landscape', () => {
       const prettierModuleClasses = wrapper.find(wrappedElement('prettier-module')).classes();
       expect(prettierModuleClasses).toContain('-search-highlighted');
     });
+
+    it('should remove the highlight when the input is cleared', async () => {
+      const wrapper = await componentWithLandscape();
+      const landscapeSearchInput = wrapper.find(wrappedElement('landscape-search-input'));
+      await landscapeSearchInput.setValue('prettier');
+
+      await landscapeSearchInput.setValue('');
+
+      const prettierModuleClasses = wrapper.find(wrappedElement('prettier-module')).classes();
+      expect(prettierModuleClasses).not.toContain('-search-highlighted');
+    });
+
+    //TODO - create a test when a search query didnt find any module name
   });
 });
 
