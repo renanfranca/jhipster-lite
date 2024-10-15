@@ -608,6 +608,20 @@ export default defineComponent({
       const foundModule = Array.from(landscapeElements.value.keys()).find(key => key.toLowerCase().includes(lowercaseQuery));
 
       highlightedModule.value = foundModule ? new ModuleSlug(foundModule) : null;
+
+      nextTick().then(scrollToHighlightedModule);
+    };
+
+    const scrollToHighlightedModule = () : void => {
+      if (highlightedModule.value) {
+        const moduleElement = landscapeElements.value.get(highlightedModule.value.get());
+        if (moduleElement) {
+          const rect = moduleElement.getBoundingClientRect();
+          if (rect.top < 0 || rect.bottom > window.innerHeight) {
+            landscapeScroller.scrollIntoView(moduleElement);
+          }
+        }
+      }
     };
 
     const performSearch = (query: string) => {
