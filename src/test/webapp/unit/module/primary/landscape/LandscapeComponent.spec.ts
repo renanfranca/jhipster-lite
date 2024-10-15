@@ -15,7 +15,7 @@ import { BodyCursorUpdater } from '@/module/primary/landscape/BodyCursorUpdater'
 import { LandscapeScroller } from '@/module/primary/landscape/LandscapeScroller';
 import { ALERT_BUS } from '@/shared/alert/application/AlertProvider';
 import { ApplicationListener } from '@/shared/alert/infrastructure/primary/ApplicationListener';
-import { flushPromises, mount, VueWrapper } from '@vue/test-utils';
+import { DOMWrapper, flushPromises, mount, VueWrapper } from '@vue/test-utils';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { stubAlertBus } from '../../../shared/alert/domain/AlertBus.fixture';
 import { wrappedElement } from '../../../WrappedElement';
@@ -1205,37 +1205,34 @@ describe('Landscape', () => {
 
   describe('Search module bar', () => {
     it('should render the search module bar', async () => {
-      const wrapper = await componentWithLandscape();
+      const { searchInput } = await setupSearchTest();
 
-      expect(wrapper.find(wrappedElement('landscape-search-input')).exists()).toBe(true);
+      expect(searchInput.exists()).toBe(true);
     });
 
-    it('should highlight the first module founded', async () => {
-      const wrapper = await componentWithLandscape();
+    it('should highlight the first module found', async () => {
+      const { wrapper, searchInput } = await setupSearchTest();
 
-      const landscapeSearchInput = wrapper.find(wrappedElement('landscape-search-input'));
-      await landscapeSearchInput.setValue('prettier');
+      await performSearch(searchInput, 'prettier');
 
       const prettierModuleClasses = wrapper.find(wrappedElement('prettier-module')).classes();
       expect(prettierModuleClasses).toContain('-search-highlighted');
     });
 
     it('should remove the highlight when the search query is cleared', async () => {
-      const wrapper = await componentWithLandscape();
-      const landscapeSearchInput = wrapper.find(wrappedElement('landscape-search-input'));
-      await landscapeSearchInput.setValue('prettier');
+      const { wrapper, searchInput } = await setupSearchTest();
+      await performSearch(searchInput, 'prettier');
 
-      await landscapeSearchInput.setValue('');
+      await performSearch(searchInput, '');
 
       const prettierModuleClasses = wrapper.find(wrappedElement('prettier-module')).classes();
       expect(prettierModuleClasses).not.toContain('-search-highlighted');
     });
 
     it('should not highlight any modules when the search query does not match any modules', async () => {
-      const wrapper = await componentWithLandscape();
-      const landscapeSearchInput = wrapper.find(wrappedElement('landscape-search-input'));
+      const { wrapper, searchInput } = await setupSearchTest();
 
-      await landscapeSearchInput.setValue('not-found');
+      await performSearch(searchInput, 'not-found');
 
       const landscape = defaultLandscape();
       landscape.standaloneLevels().forEach(level => {
@@ -1247,6 +1244,16 @@ describe('Landscape', () => {
         });
       });
     });
+
+    const setupSearchTest = async () => {
+      const wrapper = await componentWithLandscape();
+      const searchInput = wrapper.find(wrappedElement('landscape-search-input'));
+      return { wrapper, searchInput };
+    };
+
+    const performSearch = async (searchInput: DOMWrapper<Element>, searchTerm: string) => {
+      await searchInput.setValue(searchTerm);
+    };
   });
 });
 
