@@ -1248,33 +1248,18 @@ describe('Landscape', () => {
 
     it('should scroll vertically and horizontally to the highlighted module if it is not visible within the current viewport', async () => {
       const { wrapper, searchInput, landscapeScroller } = await setupSearchTest();
-
-      const mockModuleRect = vi.spyOn(Element.prototype, 'getBoundingClientRect').mockImplementation(() => ({
-        top: -100,
-        bottom: -50,
-        left: -100,
-        right: 0,
-        width: 100,
-        height: 50,
-        x: -100,
-        y: -100,
-        toJSON: () => '{"top":-100,"bottom":-50,"left":-100,"right":0,"width":100,"height":50,"x":-100,"y":-100}',
-      }));
-
-      const mockContainerRect = vi.fn().mockReturnValue({
-        top: 0,
-        bottom: 500,
-        left: 0,
-        right: 500,
-        width: 500,
-        height: 500,
-        x: 0,
-        y: 0,
-        toJSON: () => '{"top":0,"bottom":500,"left":0,"right":500,"width":500,"height":500,"x":0,"y":0}',
+      const { mockModuleRect, mockContainerRect } = setupScrollTest(wrapper, {
+        moduleRect: {
+          top: -100,
+          bottom: -50,
+          left: -100,
+          right: 0,
+          width: 100,
+          height: 50,
+          x: -100,
+          y: -100,
+        },
       });
-
-      const landscapeContainer = wrapper.find(wrappedElement('landscape-container')).element;
-      landscapeContainer.getBoundingClientRect = mockContainerRect;
 
       await performSearch(searchInput, 'prettier');
 
@@ -1291,33 +1276,18 @@ describe('Landscape', () => {
 
     it('should not scroll if the highlighted module is already visible', async () => {
       const { wrapper, searchInput, landscapeScroller } = await setupSearchTest();
-
-      const mockModuleRect = vi.spyOn(Element.prototype, 'getBoundingClientRect').mockImplementation(() => ({
-        top: 100,
-        bottom: 200,
-        left: 100,
-        right: 200,
-        width: 100,
-        height: 100,
-        x: 100,
-        y: 100,
-        toJSON: () => '{"top":100,"bottom":200,"left":100,"right":200,"width":100,"height":100,"x":100,"y":100}',
-      }));
-
-      const mockContainerRect = vi.fn().mockReturnValue({
-        top: 0,
-        bottom: 500,
-        left: 0,
-        right: 500,
-        width: 500,
-        height: 500,
-        x: 0,
-        y: 0,
-        toJSON: () => '{"top":0,"bottom":500,"left":0,"right":500,"width":500,"height":500,"x":0,"y":0}',
+      const { mockModuleRect, mockContainerRect } = setupScrollTest(wrapper, {
+        moduleRect: {
+          top: 100,
+          bottom: 200,
+          left: 100,
+          right: 200,
+          width: 100,
+          height: 100,
+          x: 100,
+          y: 100,
+        },
       });
-
-      const landscapeContainer = wrapper.find(wrappedElement('landscape-container')).element;
-      landscapeContainer.getBoundingClientRect = mockContainerRect;
 
       await performSearch(searchInput, 'prettier');
 
@@ -1343,6 +1313,41 @@ describe('Landscape', () => {
 
     const performSearch = async (searchInput: DOMWrapper<Element>, searchTerm: string) => {
       await searchInput.setValue(searchTerm);
+    };
+
+    interface ModuleRect {
+      top: number;
+      bottom: number;
+      left: number;
+      right: number;
+      width: number;
+      height: number;
+      x: number;
+      y: number;
+    }
+
+    const setupScrollTest = (wrapper: VueWrapper, { moduleRect }: { moduleRect: ModuleRect }) => {
+      const mockModuleRect = vi.spyOn(Element.prototype, 'getBoundingClientRect').mockImplementation(() => ({
+        ...moduleRect,
+        toJSON: () => JSON.stringify(moduleRect),
+      }));
+
+      const mockContainerRect = vi.fn().mockReturnValue({
+        top: 0,
+        bottom: 500,
+        left: 0,
+        right: 500,
+        width: 500,
+        height: 500,
+        x: 0,
+        y: 0,
+        toJSON: () => '{"top":0,"bottom":500,"left":0,"right":500,"width":500,"height":500,"x":0,"y":0}',
+      });
+
+      const landscapeContainer = wrapper.find(wrappedElement('landscape-container')).element;
+      landscapeContainer.getBoundingClientRect = mockContainerRect;
+
+      return { mockModuleRect, mockContainerRect };
     };
   });
 });
