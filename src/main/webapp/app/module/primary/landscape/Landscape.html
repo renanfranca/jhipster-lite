@@ -1,106 +1,110 @@
 <LandscapeLoaderVue v-if="levels.isLoading()" />
 <div class="jhipster-landscape jhlite-menu-content-template" v-else data-selector="landscape">
-  <div class="jhipster-landscape-modes-selection">
-    <div class="jhlite-mode-switch">
-      <div class="jhlite-mode-switch--modes">
-        <button
-          class="jhlite-button-switch"
-          :class="modeSwitchClass('COMPACTED')"
-          @click="selectMode('COMPACTED')"
-          data-selector="compacted-mode-button"
-        >
-          Compacted
-        </button>
-        <button
-          class="jhlite-button-switch"
-          :class="modeSwitchClass('EXTENDED')"
-          @click="selectMode('EXTENDED')"
-          data-selector="extended-mode-button"
-        >
-          Extended
-        </button>
-      </div>
-    </div>
-  </div>
-  <div class="jhipster-landscape-preset-selection">
-    <LandscapePresetConfigurationVue :selectedPresetName="selectedPresetName" @selected="selectModulesFromPreset" />
-  </div>
-
-  <div class="jhipster-landscape-search-container">
-    <div class="jhipster-landscape-search">
-      <div class="jhlite-field--field">
-        <input
-          type="text"
-          class="jhlite-input-text"
-          placeholder="Search modules..."
-          @input="performSearch($event.target.value)"
-          data-selector="landscape-search-input"
-        />
-      </div>
-    </div>
-  </div>
-
-  <div
-    :class="landscapeClass()"
-    ref="landscapeContainer"
-    data-selector="landscape-container"
-    @mousedown="startGrabbing"
-    @mousemove="grabbing"
-    @mouseup="stopGrabbing"
-    @mouseleave="stopGrabbing"
-  >
-    <div class="jhipster-landscape-levels">
-      <ul class="jhipster-landscape-levels--level" :class="modeClass()" v-for="level in levels.value()">
-        <li class="jhipster-landscape-element" v-for="element in level.elements" :class="modeClass()">
-          <div
-            class="jhipster-landscape-feature"
-            :class="elementFlavor(element.slug())"
-            :data-selector="`${element.slugString()}-feature`"
-            v-if="isFeature(element)"
-            :ref="el => landscapeElements.set(element.slugString(), el)"
+  <div class="jhlite-menu-content-template--container">
+    <div class="jhipster-landscape-modes-selection">
+      <div class="jhlite-mode-switch">
+        <div class="jhlite-mode-switch--modes">
+          <button
+            class="jhlite-button-switch"
+            :class="modeSwitchClass('COMPACTED')"
+            @click="selectMode('COMPACTED')"
+            data-selector="compacted-mode-button"
           >
-            <h2 class="jhipster-landscape-feature--title" :class="modeClass()">{{ element.slugString() }}</h2>
-            <ul class="jhipster-landscape-feature--modules">
-              <li class="jhipster-landscape-feature--module" v-for="module in element.modules">
-                <LandscapeModuleVue
-                  :module="module"
-                  :landscapeElements="landscapeElements"
-                  :moduleFlavor="elementFlavor(module.slug())"
-                  @over="emphasizeModule(module.slug())"
-                  @out="deEmphasizeModule()"
-                  @clicked="toggleModule(module.slug())"
-                  @apply="applyModule(module.slug())"
-                />
-              </li>
-            </ul>
-          </div>
-
-          <LandscapeModuleVue
-            :module="element"
-            :landscapeElements="landscapeElements"
-            :moduleFlavor="elementFlavor(element.slug())"
-            @over="emphasizeModule(element.slug())"
-            @out="deEmphasizeModule()"
-            @clicked="toggleModule(element.slug())"
-            @apply="applyModule(element.slug())"
-            v-else
-          />
-        </li>
-      </ul>
+            Compacted
+          </button>
+          <button
+            class="jhlite-button-switch"
+            :class="modeSwitchClass('EXTENDED')"
+            @click="selectMode('EXTENDED')"
+            data-selector="extended-mode-button"
+          >
+            Extended
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="jhipster-landscape-preset-selection">
+      <LandscapePresetConfigurationVue :selectedPresetName="selectedPresetName" @selected="selectModulesFromPreset" />
     </div>
 
-    <svg
-      class="jhipster-landscape-connectors"
-      :style="`width: ${landscapeSize.width}px; height: ${landscapeSize.height}px`"
-      data-selector="landscape-connectors"
+    <div class="jhipster-landscape-header">
+      <div class="jhipster-landscape-search-container">
+        <div class="jhipster-landscape-search">
+          <div class="jhlite-field--field">
+            <input
+              type="text"
+              class="jhlite-input-text"
+              placeholder="Search modules..."
+              @input="performSearch($event.target.value)"
+              data-selector="landscape-search-input"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div
+      :class="landscapeClass()"
+      ref="landscapeContainer"
+      data-selector="landscape-container"
+      @mousedown="startGrabbing"
+      @mousemove="grabbing"
+      @mouseup="stopGrabbing"
+      @mouseleave="stopGrabbing"
     >
-      <path
-        v-for="connector in landscapeConnectors"
-        class="jhipster-landscape-connectors--line"
-        :class="elementFlavor(connector.startingElement)"
-        :d="connector.path"
-      />
-    </svg>
+      <div class="jhipster-landscape-levels">
+        <ul class="jhipster-landscape-levels--level" :class="modeClass()" v-for="level in levels.value()">
+          <li class="jhipster-landscape-element" v-for="element in level.elements" :class="modeClass()">
+            <div
+              class="jhipster-landscape-feature"
+              :class="elementFlavor(element.slug())"
+              :data-selector="`${element.slugString()}-feature`"
+              v-if="isFeature(element)"
+              :ref="el => landscapeElements.set(element.slugString(), el)"
+            >
+              <h2 class="jhipster-landscape-feature--title" :class="modeClass()">{{ element.slugString() }}</h2>
+              <ul class="jhipster-landscape-feature--modules">
+                <li class="jhipster-landscape-feature--module" v-for="module in element.modules">
+                  <LandscapeModuleVue
+                    :module="module"
+                    :landscapeElements="landscapeElements"
+                    :moduleFlavor="elementFlavor(module.slug())"
+                    @over="emphasizeModule(module.slug())"
+                    @out="deEmphasizeModule()"
+                    @clicked="toggleModule(module.slug())"
+                    @apply="applyModule(module.slug())"
+                  />
+                </li>
+              </ul>
+            </div>
+
+            <LandscapeModuleVue
+              :module="element"
+              :landscapeElements="landscapeElements"
+              :moduleFlavor="elementFlavor(element.slug())"
+              @over="emphasizeModule(element.slug())"
+              @out="deEmphasizeModule()"
+              @clicked="toggleModule(element.slug())"
+              @apply="applyModule(element.slug())"
+              v-else
+            />
+          </li>
+        </ul>
+      </div>
+
+      <svg
+        class="jhipster-landscape-connectors"
+        :style="`width: ${landscapeSize.width}px; height: ${landscapeSize.height}px`"
+        data-selector="landscape-connectors"
+      >
+        <path
+          v-for="connector in landscapeConnectors"
+          class="jhipster-landscape-connectors--line"
+          :class="elementFlavor(connector.startingElement)"
+          :d="connector.path"
+        />
+      </svg>
+    </div>
   </div>
 
   <div class="jhlite-menu-content-template--menu">

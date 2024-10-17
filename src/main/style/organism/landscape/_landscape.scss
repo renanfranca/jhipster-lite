@@ -38,6 +38,32 @@ $jhlite-landscape-primary-alternative-color: colors.$jhlite-global-primary-alter
     background: var(--jhlite-chip-bg-color);
   }
 
+  .jhipster-landscape-header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px;
+  }
+
+  .jhipster-landscape-search-container {
+    display: flex;
+    flex-grow: 1;
+    justify-content: center;
+    margin: 0 20px;
+  }
+
+  .jhipster-landscape-search {
+    display: flex;
+    align-items: center;
+    border-radius: 20px;
+    box-shadow: 0 2px 10px rgb(0 0 0 / 10%);
+    background-color: white;
+    padding: 10px;
+    width: 100%;
+    max-width: 250px;
+  }
+
   .jhipster-landscape-connectors {
     position: absolute;
     top: $jhlite-landscape-padding;
@@ -161,4 +187,33 @@ $jhlite-landscape-primary-alternative-color: colors.$jhlite-global-primary-alter
 
 .jhipster-landscape {
   position: relative;
+}
+
+.-search-highlighted {
+  position: relative;
+  z-index: 1;
+  box-shadow:
+    0 0 0 3px #ffd700,
+    0 0 0 6px rgb(255 215 0 / 50%);
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow:
+      0 0 0 3px #ffd700,
+      0 0 0 6px rgb(255 215 0 / 70%);
+  }
+
+  70% {
+    box-shadow:
+      0 0 0 3px #ffd700,
+      0 0 0 12px rgb(255 215 0 / 0%);
+  }
+
+  100% {
+    box-shadow:
+      0 0 0 3px #ffd700,
+      0 0 0 6px rgb(255 215 0 / 0%);
+  }
 }

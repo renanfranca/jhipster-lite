@@ -11,10 +11,17 @@ $jhlite-menu-content-template-color-divider: colors.$jhlite-global-color-fill-se
   height: 100%;
   min-height: 0;
 
+  &--container {
+    display: flex;
+    flex-direction: column;
+    height: inherit;
+  }
+
   &--content {
     height: inherit;
   }
 
+  &--container,
   &--content,
   &--menu {
     box-sizing: border-box;
