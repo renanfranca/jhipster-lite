@@ -22,6 +22,16 @@ describe('LandscapeScroller', () => {
     expect(element.scroll).toBeCalledWith(10, 10);
   });
 
+  it('should scroll smooth', () => {
+    const element = stubHtmlElement();
+    const landscapeScroller = new LandscapeScroller();
+
+    landscapeScroller.scrollSmooth(element, 10, 10);
+
+    expect(element.scroll).toHaveBeenCalledTimes(1);
+    expect(element.scroll).toBeCalledWith({ left: 10, top: 10, behavior: 'smooth' });
+  });
+
   it('should scroll into view', () => {
     const element = stubHtmlElement();
     const landscapeScroller = new LandscapeScroller();

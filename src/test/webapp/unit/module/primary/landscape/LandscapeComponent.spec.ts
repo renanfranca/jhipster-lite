@@ -48,6 +48,7 @@ const stubApplicationListener = (): ApplicationListenerStub => ({
 
 const stubLandscapeScroller = (): any => ({
   scroll: vi.fn(),
+  scrollSmooth: vi.fn(),
   scrollIntoView: vi.fn(),
 });
 
@@ -1320,8 +1321,8 @@ describe('Landscape', () => {
 
       await performSearch(searchInput, '');
 
-      expect(landscapeScroller.scroll).toHaveBeenCalledTimes(1);
-      expect(landscapeScroller.scroll).toHaveBeenCalledWith(landscapeContainer, 0, 0);
+      expect(landscapeScroller.scrollSmooth).toHaveBeenCalledTimes(1);
+      expect(landscapeScroller.scrollSmooth).toHaveBeenCalledWith(landscapeContainer, 0, 0);
     });
 
     const setupSearchTest = async () => {

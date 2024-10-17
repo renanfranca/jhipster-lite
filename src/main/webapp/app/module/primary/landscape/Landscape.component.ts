@@ -622,7 +622,7 @@ export default defineComponent({
       return [...landscapeElements.value.keys()].find(key => key.toLowerCase().includes(query.toLowerCase())) || null;
     };
 
-    const resetLandscapeContainerPosition = (): void | PromiseLike<void> => landscapeScroller.scroll(landscapeContainer.value, 0, 0);
+    const resetLandscapeContainerPosition = (): void | PromiseLike<void> => landscapeScroller.scrollSmooth(landscapeContainer.value, 0, 0);
 
     const scrollToHighlightedModule = (moduleElement: HTMLElement): void => {
       const rect = moduleElement.getBoundingClientRect();
