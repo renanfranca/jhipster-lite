@@ -605,6 +605,7 @@ export default defineComponent({
     const highlightModule = (query: string) => {
       if (!query) {
         highlightedModule.value = null;
+        nextTick().then(resetLandscapeContainerPosition);
         return;
       }
 
@@ -618,6 +619,8 @@ export default defineComponent({
         nextTick().then(() => scrollToHighlightedModule(moduleElement));
       }
     };
+
+    const resetLandscapeContainerPosition = (): void | PromiseLike<void> => landscapeScroller.scroll(landscapeContainer.value, 0, 0);
 
     const scrollToHighlightedModule = (moduleElement: HTMLElement): void => {
       const rect = moduleElement.getBoundingClientRect();

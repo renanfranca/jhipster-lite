@@ -1302,6 +1302,28 @@ describe('Landscape', () => {
       expect(landscapeScroller.scrollIntoView).not.toHaveBeenCalled();
     });
 
+    it('should reset the landscape container position to the initial landscape layout when the search query is cleared', async () => {
+      const { wrapper, searchInput, landscapeScroller } = await setupSearchTest();
+      const { landscapeContainer } = setupScrollTest(wrapper, {
+        moduleRect: {
+          top: -100,
+          bottom: -50,
+          left: -100,
+          right: 0,
+          width: 100,
+          height: 50,
+          x: -100,
+          y: -100,
+        },
+      });
+      await performSearch(searchInput, 'prettier');
+
+      await performSearch(searchInput, '');
+
+      expect(landscapeScroller.scroll).toHaveBeenCalledTimes(1);
+      expect(landscapeScroller.scroll).toHaveBeenCalledWith(landscapeContainer, 0, 0);
+    });
+
     const setupSearchTest = async () => {
       const landscapeScroller = stubLandscapeScroller();
       const modules = repositoryWithLandscape();
@@ -1350,7 +1372,7 @@ describe('Landscape', () => {
       const landscapeContainer = wrapper.find(wrappedElement('landscape-container')).element;
       landscapeContainer.getBoundingClientRect = mockContainerRect;
 
-      return { mockModuleRect, mockContainerRect };
+      return { mockModuleRect, mockContainerRect, landscapeContainer };
     };
   });
 });
