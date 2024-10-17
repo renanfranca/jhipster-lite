@@ -1220,6 +1220,15 @@ describe('Landscape', () => {
       expect(prettierModuleClasses).toContain('-search-highlighted');
     });
 
+    it('should highlight the first feature found', async () => {
+      const { wrapper, searchInput } = await setupSearchTest();
+
+      await performSearch(searchInput, 'client');
+
+      const prettierModuleClasses = wrapper.find(wrappedElement('client-feature')).classes();
+      expect(prettierModuleClasses).toContain('-search-highlighted');
+    });
+
     it('should remove the highlight when the search query is cleared', async () => {
       const { wrapper, searchInput } = await setupSearchTest();
       await performSearch(searchInput, 'prettier');
