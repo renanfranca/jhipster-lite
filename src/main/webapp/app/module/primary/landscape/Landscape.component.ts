@@ -609,23 +609,21 @@ export default defineComponent({
 
       highlightedModule.value = foundModule ? new ModuleSlug(foundModule) : null;
 
-      nextTick().then(scrollToHighlightedModule);
+      if (highlightedModule.value) {
+        const moduleElement = landscapeElements.value.get(highlightedModule.value.get())!;
+        nextTick().then(() => scrollToHighlightedModule(moduleElement));
+      }
     };
 
-    const scrollToHighlightedModule = (): void => {
-      if (highlightedModule.value) {
-        const moduleElement = landscapeElements.value.get(highlightedModule.value.get());
-        if (moduleElement) {
-          const rect = moduleElement.getBoundingClientRect();
-          const containerRect = landscapeContainer.value.getBoundingClientRect();
+    const scrollToHighlightedModule = (moduleElement: HTMLElement): void => {
+      const rect = moduleElement.getBoundingClientRect();
+      const containerRect = landscapeContainer.value.getBoundingClientRect();
 
-          const verticallyOutOfView = rect.top < containerRect.top || rect.bottom > containerRect.bottom;
-          const horizontallyOutOfView = rect.left < containerRect.left || rect.right > containerRect.right;
+      const verticallyOutOfView = rect.top < containerRect.top || rect.bottom > containerRect.bottom;
+      const horizontallyOutOfView = rect.left < containerRect.left || rect.right > containerRect.right;
 
-          if (verticallyOutOfView || horizontallyOutOfView) {
-            landscapeScroller.scrollIntoView(moduleElement);
-          }
-        }
+      if (verticallyOutOfView || horizontallyOutOfView) {
+        landscapeScroller.scrollIntoView(moduleElement);
       }
     };
 
