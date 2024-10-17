@@ -609,15 +609,17 @@ export default defineComponent({
         return;
       }
 
-      const lowercaseQuery = query.toLowerCase();
-      const foundModule = Array.from(landscapeElements.value.keys()).find(key => key.toLowerCase().includes(lowercaseQuery));
-
+      const foundModule = findModule(query);
       highlightedModule.value = foundModule ? new ModuleSlug(foundModule) : null;
 
-      if (highlightedModule.value) {
-        const moduleElement = landscapeElements.value.get(highlightedModule.value.get())!;
+      if (foundModule) {
+        const moduleElement = landscapeElements.value.get(foundModule)!;
         nextTick().then(() => scrollToHighlightedModule(moduleElement));
       }
+    };
+
+    const findModule = (query: string): string | null => {
+      return [...landscapeElements.value.keys()].find(key => key.toLowerCase().includes(query.toLowerCase())) || null;
     };
 
     const resetLandscapeContainerPosition = (): void | PromiseLike<void> => landscapeScroller.scroll(landscapeContainer.value, 0, 0);
