@@ -598,6 +598,10 @@ export default defineComponent({
       return document?.activeElement?.tagName === 'INPUT';
     };
 
+    const performSearch = (query: string) => {
+      highlightModule(query);
+    };
+
     const highlightModule = (query: string) => {
       if (!query) {
         highlightedModule.value = null;
@@ -625,10 +629,6 @@ export default defineComponent({
       if (verticallyOutOfView || horizontallyOutOfView) {
         landscapeScroller.scrollIntoView(moduleElement);
       }
-    };
-
-    const performSearch = (query: string) => {
-      highlightModule(query);
     };
 
     return {
