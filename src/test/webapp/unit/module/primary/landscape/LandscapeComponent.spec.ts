@@ -1278,9 +1278,6 @@ describe('Landscape', () => {
       expect(mockContainerRect).toHaveBeenCalled();
       expect(landscapeScroller.scrollIntoView).toHaveBeenCalledTimes(1);
       expect(landscapeScroller.scrollIntoView).toHaveBeenCalledWith(prettierModule);
-
-      mockModuleRect.mockRestore();
-      mockContainerRect.mockRestore();
     });
 
     it('should not scroll if the highlighted module is already visible', async () => {
@@ -1303,9 +1300,6 @@ describe('Landscape', () => {
       expect(mockModuleRect).toHaveBeenCalled();
       expect(mockContainerRect).toHaveBeenCalled();
       expect(landscapeScroller.scrollIntoView).not.toHaveBeenCalled();
-
-      mockModuleRect.mockRestore();
-      mockContainerRect.mockRestore();
     });
 
     const setupSearchTest = async () => {
