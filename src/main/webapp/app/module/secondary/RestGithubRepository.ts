@@ -1,5 +1,8 @@
 import { AxiosHttp } from '@/shared/http/infrastructure/secondary/AxiosHttp';
-import { GithubRepository, GithubAuthorizationUrl, GithubToken } from '../domain/GithubRepository';
+import { GithubRepository } from '../domain/GithubRepository';
+import type { GithubAuthorizationCode } from '@/module/domain/GithubAuthorizationCode';
+import type { GithubAuthorizationUrl } from '@/module/domain/GithubAuthorizationUrl';
+import type { GithubToken } from '@/module/domain/GithubToken';
 
 export class RestGithubRepository implements GithubRepository {
   constructor(private readonly axiosInstance: AxiosHttp) {}
@@ -9,7 +12,7 @@ export class RestGithubRepository implements GithubRepository {
       .then(response => response.data);
   }
 
-  authenticate(code: string): Promise<GithubToken> {
+  authenticate(code: GithubAuthorizationCode): Promise<GithubToken> {
     return this.axiosInstance.get<GithubToken>(`/api/github/oauth2/callback?code=${encodeURIComponent(code)}`)
       .then(response => response.data);
   }

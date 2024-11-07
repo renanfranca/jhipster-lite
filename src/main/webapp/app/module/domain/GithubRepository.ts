@@ -1,11 +1,5 @@
-export interface GithubAuthorizationUrl {
-  url: string;
-}
-
-export interface GithubToken {
-  accessToken: string;
-  tokenType: string;
-}
+import type { GithubAuthorizationUrl } from '@/module/domain/GithubAuthorizationUrl';
+import type { GithubToken } from '@/module/domain/GithubToken';
 
 export interface GithubRepository {
   getAuthorizationUrl(): Promise<GithubAuthorizationUrl>;
