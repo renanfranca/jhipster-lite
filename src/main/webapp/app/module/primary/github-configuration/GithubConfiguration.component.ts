@@ -1,9 +1,9 @@
+import { inject } from '@/injections';
 import { GITHUB_REPOSITORY } from '@/module/application/ModuleProvider';
+import type { GithubToken } from '@/module/domain/GithubToken';
+import { IconVue } from '@/shared/icon/infrastructure/primary';
 import { defineComponent, onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
-import { inject } from '@/injections';
-import { IconVue } from '@/shared/icon/infrastructure/primary';
-import type { GithubToken } from '@/module/domain/GithubToken';
 
 export default defineComponent({
   name: 'GithubConfigurationVue',
@@ -29,7 +29,7 @@ export default defineComponent({
       githubRepository
         .getAuthorizationUrl()
         .then(url => {
-          window.location.href = url;
+          window.location.assign(url);
         })
         .catch(error => console.error('Error getting authorization URL:', error));
     };

@@ -22,13 +22,13 @@ class GithubResource {
 
   @GetMapping("github/oauth2/authorization")
   @Operation(summary = "Get Github authorization URL")
-  ResponseEntity<RestGithubAuthorizationUrl> getAuthorizationUrl() {
-    return ResponseEntity.ok(RestGithubAuthorizationUrl.from(github.getAuthorizationUrl()));
+  public String getAuthorizationUrl() {
+    return github.getAuthorizationUrl().url();
   }
 
   @GetMapping("github/oauth2/callback")
   @Operation(summary = "Handle Github OAuth2 callback")
-  ResponseEntity<RestGithubToken> handleCallback(@RequestParam String code) {
+  public ResponseEntity<RestGithubToken> handleCallback(@RequestParam String code) {
     return ResponseEntity.ok(RestGithubToken.from(github.authenticate(code)));
   }
 }
