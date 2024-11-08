@@ -12,7 +12,7 @@ public record GithubOauth2Configuration(String clientId, String clientSecret, St
   }
 
   public String buildAuthorizationUrl() {
-    String scopeString = String.join(" ", scopes.stream().map(GithubScope::get).toList());
+    String scopeString = String.join(",", scopes.stream().map(GithubScope::get).toList());
     return String.format(
       "https://github.com/login/oauth/authorize?client_id=%s&redirect_uri=%s&scope=%s",
       clientId,

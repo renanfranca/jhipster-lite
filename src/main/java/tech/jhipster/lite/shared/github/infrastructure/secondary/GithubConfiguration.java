@@ -27,6 +27,11 @@ class GithubConfiguration {
 
   @Bean
   GithubOauth2Configuration githubOauth2Configuration() {
-    return new GithubOauth2Configuration(clientId, clientSecret, redirectUri, Set.of(GithubScope.USER_EMAIL));
+    return new GithubOauth2Configuration(
+      clientId,
+      clientSecret,
+      redirectUri,
+      Set.of(GithubScope.READ_REPO, GithubScope.READ_USER, GithubScope.READ_ORG, GithubScope.READ_WORKFLOW)
+    );
   }
 }
