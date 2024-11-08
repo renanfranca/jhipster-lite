@@ -12,6 +12,8 @@ import { RestModulesRepository } from '@/module/secondary/RestModulesRepository'
 import { RestProjectFoldersRepository } from '@/module/secondary/RestProjectFoldersRepository';
 import { AxiosHttp } from '@/shared/http/infrastructure/secondary/AxiosHttp';
 import { key } from 'piqure';
+import { GithubRepository } from '@/module/domain/GithubRepository';
+import { RestGithubRepository } from '@/module/secondary/RestGithubRepository';
 
 export const PROJECT_FOLDERS_REPOSITORY = key<ProjectFoldersRepository>('ProjectFoldersRepository');
 export const MANAGEMENT_REPOSITORY = key<ManagementRepository>('ManagementRepository');
@@ -19,6 +21,7 @@ export const MODULES_REPOSITORY = key<ModulesRepository>('ModulesRepository');
 export const THEMES_REPOSITORY = key<ThemeRepository>('ThemesRepository');
 export const MODULE_PARAMETERS_REPOSITORY = key<ModuleParametersRepository>('ParamsRepository');
 export const LANDSCAPE_SCROLLER = key<LandscapeScroller>('LandscapeScroller');
+export const GITHUB_REPOSITORY = key<GithubRepository>('GithubRepository');
 
 export const provideForModule = (rest: AxiosHttp): void => {
   provide(PROJECT_FOLDERS_REPOSITORY, new RestProjectFoldersRepository(rest));
@@ -27,4 +30,5 @@ export const provideForModule = (rest: AxiosHttp): void => {
   provide(THEMES_REPOSITORY, new LocalWindowThemeRepository(window, localStorage));
   provide(MODULE_PARAMETERS_REPOSITORY, new LocalStorageModuleParametersRepository(localStorage));
   provide(LANDSCAPE_SCROLLER, new LandscapeScroller());
+  provide(GITHUB_REPOSITORY, new RestGithubRepository(rest));
 };

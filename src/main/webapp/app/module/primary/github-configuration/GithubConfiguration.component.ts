@@ -1,15 +1,15 @@
+import { GITHUB_REPOSITORY } from '@/module/application/ModuleProvider';
 import { defineComponent, onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { inject } from '@/injections';
 import { IconVue } from '@/shared/icon/infrastructure/primary';
-import type { GithubRepository } from '@/module/domain/GithubRepository';
 import type { GithubToken } from '@/module/domain/GithubToken';
 
 export default defineComponent({
   name: 'GithubConfigurationVue',
   components: { IconVue },
   setup() {
-    const githubRepository = inject<GithubRepository>('githubRepository');
+    const githubRepository = inject(GITHUB_REPOSITORY);
     const route = useRoute();
     const githubToken = ref<GithubToken | null>(null);
 
