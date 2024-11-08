@@ -87,4 +87,4 @@ spring:
 github:
   client-id: ${CLIENT_ID_GITHUB:Ov23liVVhyCb7yVEdIPV}
   client-secret: ${CLIENT_SECRET_GITHUB:70d8544193c332d6f41b744e646dd2a658f1fbde}
-  redirect-uri: ${REDIRECT_URI_GITHUB:http://localhost:7471/api/github/oauth2/callback}
+  redirect-uri: ${REDIRECT_URI_GITHUB:http://localhost:9000/github-configuration}

@@ -1,5 +1,6 @@
 import { LandscapeVue } from '@/module/primary/landscape';
 import { ModulesVue } from '@/module/primary/modules-patch';
+import { GithubConfigurationVue } from '@/module/primary/github-configuration';
 import { createRouter, createWebHistory } from 'vue-router';
 
 export const routes = [
@@ -16,6 +17,11 @@ export const routes = [
     path: '/landscape',
     name: 'landscape',
     component: LandscapeVue,
+  },
+  {
+    path: '/github-configuration',
+    name: 'github-configuration',
+    component: GithubConfigurationVue,
   },
 ];
 
