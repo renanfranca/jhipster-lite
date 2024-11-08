@@ -1,6 +1,6 @@
 import { LandscapeVue } from '@/module/primary/landscape';
 import { ModulesVue } from '@/module/primary/modules-patch';
-import { GithubConfigurationVue } from '@/module/primary/github-configuration';
+import { GithubConfigurationVue } from '@/github-configuration';
 import { createRouter, createWebHistory } from 'vue-router';
 
 export const routes = [
