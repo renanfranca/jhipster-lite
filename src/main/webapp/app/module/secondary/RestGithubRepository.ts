@@ -1,5 +1,5 @@
 import { AxiosHttp } from '@/shared/http/infrastructure/secondary/AxiosHttp';
-import { GithubRepository } from '../domain/GithubRepository';
+import { GithubRepository, GithubOrganization } from '../domain/GithubRepository';
 import type { GithubAuthorizationCode } from '@/module/domain/GithubAuthorizationCode';
 import type { GithubAuthorizationUrl } from '@/module/domain/GithubAuthorizationUrl';
 import type { GithubToken } from '@/module/domain/GithubToken';
@@ -17,5 +17,15 @@ export class RestGithubRepository implements GithubRepository {
     return this.axiosInstance
       .get<RestGithubToken>(`/api/github/oauth2/callback?code=${encodeURIComponent(code)}`)
       .then(mapToGithubToken);
+  }
+
+  listOrganizations(token: GithubToken): Promise<GithubOrganization[]> {
+    return this.axiosInstance
+      .get<GithubOrganization[]>('/api/github/organizations', {
+        headers: {
+          Authorization: `${token.tokenType} ${token.accessToken}`,
+        },
+      })
+      .then(response => response.data);
   }
 }
