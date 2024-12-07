@@ -1,0 +1,8 @@
+<div class="jhlite-github-callback">
+  <div v-if="loading" data-selector="github-callback-loading">Authenticating with GitHub...</div>
+  <div v-else-if="error" data-selector="github-callback-error">{{ error }}</div>
+  <div v-else data-selector="github-callback-success">
+    <p>Successfully connected to GitHub!</p>
+    <p>You will be redirected in {{ countdown }} seconds...</p>
+  </div>
+</div>
