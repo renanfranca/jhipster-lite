@@ -1,3 +1,4 @@
+import { RanksUsed, toRanksUsed } from '@/module/domain/RanksUsed';
 import { LandscapeRankModuleFilterVue } from '@/module/primary/landscape-rank-module-filter';
 import { mount } from '@vue/test-utils';
 import { describe, expect, it } from 'vitest';
@@ -90,10 +91,10 @@ describe('LandscapeRankModuleFilterComponent', () => {
   });
 
   it('should disable rank button without module rank associated', () => {
-    const ranksQuantities: RanksQuantities = toRanksQuantities(defaultLandscape());
+    const ranksUsed: RanksUsed = toRanksUsed(defaultLandscape());
     const wrapper = mount(LandscapeRankModuleFilterVue, {
       props: {
-        ranksQuantities: ranksQuantities,
+        ranksUsed: ranksUsed,
       },
     });
 
