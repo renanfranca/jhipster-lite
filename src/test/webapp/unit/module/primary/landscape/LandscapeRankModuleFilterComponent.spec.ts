@@ -2,6 +2,7 @@ import { LandscapeRankModuleFilterVue } from '@/module/primary/landscape-rank-mo
 import { mount } from '@vue/test-utils';
 import { describe, expect, it } from 'vitest';
 import { wrappedElement } from '../../../WrappedElement';
+import { defaultLandscape } from '../../domain/landscape/Landscape.fixture';
 
 const RANKS = ['RANK_D', 'RANK_C', 'RANK_B', 'RANK_A', 'RANK_S'];
 
@@ -86,5 +87,26 @@ describe('LandscapeRankModuleFilterComponent', () => {
     const rankDButton = wrapper.find(wrappedElement('rank-RANK_D-filter'));
 
     expect(rankDButton.attributes('title')).toBe('Experimental or advanced module requiring specific expertise');
+  });
+
+  it('should disable rank button without module rank associated', () => {
+    const ranksQuantities: RanksQuantities = toRanksQuantities(defaultLandscape());
+    const wrapper = mount(LandscapeRankModuleFilterVue, {
+      props: {
+        ranksQuantities: ranksQuantities,
+      },
+    });
+
+    const rankSButton = wrapper.find(wrappedElement('rank-RANK_S-filter'));
+    const rankAButton = wrapper.find(wrappedElement('rank-RANK_A-filter'));
+    const rankBButton = wrapper.find(wrappedElement('rank-RANK_B-filter'));
+    const rankCButton = wrapper.find(wrappedElement('rank-RANK_C-filter'));
+    const rankDButton = wrapper.find(wrappedElement('rank-RANK_D-filter'));
+
+    expect(rankSButton.attributes('disabled')).toBeUndefined();
+    expect(rankDButton.attributes('disabled')).toBeUndefined();
+    expect(rankAButton.attributes('disabled')).toBeDefined();
+    expect(rankBButton.attributes('disabled')).toBeDefined();
+    expect(rankCButton.attributes('disabled')).toBeDefined();
   });
 });
