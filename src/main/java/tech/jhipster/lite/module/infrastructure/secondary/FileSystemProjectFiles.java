@@ -3,6 +3,8 @@ package tech.jhipster.lite.module.infrastructure.secondary;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.Collection;
+import java.util.List;
 import org.apache.commons.io.IOUtils;
 import org.springframework.stereotype.Service;
 import tech.jhipster.lite.module.domain.ProjectFiles;
@@ -52,9 +54,27 @@ public class FileSystemProjectFiles implements ProjectFiles {
     }
   }
 
+  @Override
+  public Collection<String> findPaths(String folderPath) {
+    Assert.notBlank("folderPath", folderPath);
+
+    try (InputStream input = getInputStream(folderPath)) {
+      assertFolderExist(folderPath, input);
+      return List.of();
+    } catch (IOException e) {
+      throw GeneratorException.technicalError("Error closing " + folderPath + ": " + e.getMessage(), e);
+    }
+  }
+
   private void assertFileExist(String path, InputStream input) {
     if (input == null) {
       throw GeneratorException.technicalError("Can't find file: " + path);
+    }
+  }
+
+  private void assertFolderExist(String path, InputStream input) {
+    if (input == null) {
+      throw GeneratorException.technicalError("Can't find folder: " + path);
     }
   }
 
