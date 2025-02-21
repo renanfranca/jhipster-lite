@@ -2,6 +2,7 @@ package tech.jhipster.lite.module.infrastructure.secondary;
 
 import static org.assertj.core.api.Assertions.*;
 
+import java.util.Collection;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -51,6 +52,21 @@ class FileSystemProjectFilesTest {
     @Test
     void shouldNotFindUnknownFolder() {
       assertThatThrownBy(() -> files.findPaths("unknown")).isExactlyInstanceOf(GeneratorException.class);
+    }
+
+    @Test
+    void shouldFindFilesPaths() {
+      Collection<String> paths = files.findPaths("/generator/init");
+
+      assertThat(paths).contains(
+        "/generator/init/.editorconfig.mustache",
+        "/generator/init/.husky/pre-commit",
+        "/generator/init/.lintstagedrc.cjs",
+        "/generator/init/README.md.mustache",
+        "/generator/init/gitattributes",
+        "/generator/init/gitignore",
+        "/generator/init/package.json.mustache"
+      );
     }
   }
 }
