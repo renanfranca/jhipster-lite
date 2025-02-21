@@ -43,4 +43,14 @@ class FileSystemProjectFilesTest {
       assertThat(files.readBytes("/generator/dependencies/Dockerfile")).isNotEmpty();
     }
   }
+
+  @Nested
+  @DisplayName("Paths")
+  class FileSystemProjectFilesFindPathsTest {
+
+    @Test
+    void shouldNotFindUnknownFolder() {
+      assertThatThrownBy(() -> files.findPaths("unknown")).isExactlyInstanceOf(GeneratorException.class);
+    }
+  }
 }
