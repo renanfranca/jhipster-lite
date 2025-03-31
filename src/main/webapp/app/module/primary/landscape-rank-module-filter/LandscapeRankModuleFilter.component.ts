@@ -16,7 +16,6 @@ export default defineComponent({
   setup(props, { emit }) {
     const ranks = RANKS;
     const selectedRank = ref<Optional<ModuleRank>>(Optional.empty());
-    const hoverRankS = ref<boolean>(false);
 
     const rankDescriptions: RankDescription = {
       RANK_D: 'Experimental or advanced module requiring specific expertise',
@@ -44,8 +43,6 @@ export default defineComponent({
 
     const isRankDisabled = (rank: ModuleRank): boolean => props.moduleRankStatistics.find(ru => ru.rank === rank)?.quantity === 0;
 
-    const isRankHovered = (rank: ModuleRank): boolean => rank === 'RANK_S' && hoverRankS.value;
-
     const getRankColorClass = (rank: ModuleRank): string => `-rank-color -${extractRankLetter(rank).toLowerCase()}`;
 
     const isAnyRankSelected = (): boolean => selectedRank.value.isPresent();
@@ -60,7 +57,6 @@ export default defineComponent({
       formatRankFullName,
       getRankDescription,
       isRankDisabled,
-      isRankHovered,
       getRankColorClass,
       isAnyRankSelected,
       isReduceAttention,
