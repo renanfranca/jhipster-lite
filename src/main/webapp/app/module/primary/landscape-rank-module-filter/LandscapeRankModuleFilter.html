@@ -1,23 +1,16 @@
 <div class="landscape-rank-module-filter">
   <div class="jhlite-landscape-rank-module-filter--ranks">
-    <button
+    <ToggleButtonExpandableVue
       v-for="rank in ranks"
       :key="rank"
-      class="jhlite-button-toggle"
-      :class="{
-         '-active': isRankSelected(rank),
-         [getRankColorClass(rank)]: isAnyRankSelected(),
-         '-reduced-attention': isReduceAttention(rank)
-       }"
-      @click="toggleRank(rank)"
-      :data-testid="`rank-${rank}-filter`"
+      :shortName="formatRankShortName(rank)"
+      :fullName="formatRankFullName(rank)"
+      :isActive="isRankSelected(rank)"
+      :customClasses="getRankClasses(rank)"
+      :dataTestId="`rank-${rank}-filter`"
       :title="getRankDescription(rank)"
       :disabled="isRankDisabled(rank)"
-    >
-      <span class="jhlite-button-toggle-content">
-        <span class="jhlite-button-toggle-short-name" :data-testid="`short-name-${rank}`">{{ formatRankShortName(rank) }}</span>
-        <span class="jhlite-button-toggle-full-name" :data-testid="`full-name-${rank}`">{{ formatRankFullName(rank) }}</span>
-      </span>
-    </button>
+      @click="toggleRank(rank)"
+    />
   </div>
 </div>

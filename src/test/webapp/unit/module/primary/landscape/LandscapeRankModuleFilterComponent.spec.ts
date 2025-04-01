@@ -12,7 +12,7 @@ import { applicationBaseNamePropertyDefinition } from '../../domain/Modules.fixt
 const wrap = (props?: { moduleRankStatistics: ModuleRankStatistics }): VueWrapper => {
   return mount(LandscapeRankModuleFilterVue, {
     props: props || {
-      moduleRankStatistics: RANKS.map(rank => ({ rank, quantity: 1 })), // Force enable all ranks
+      moduleRankStatistics: RANKS.map(rank => ({ rank, quantity: 1 })),
     },
   });
 };
@@ -145,6 +145,46 @@ describe('LandscapeRankModuleFilterComponent', () => {
 
       expect(rankButton.classes()).toContain('-rank-color');
       expect(rankButton.classes()).toContain(rankColorClasses[rank]);
+    }
+  });
+
+  it('should display buttons without colors by default', async () => {
+    const wrapper = wrap();
+
+    const rankColorClasses = {
+      RANK_D: '-d',
+      RANK_C: '-c',
+      RANK_B: '-b',
+      RANK_A: '-a',
+      RANK_S: '-s',
+    };
+    for (const rank of RANKS) {
+      const rankButton = wrapper.find(wrappedElement(`rank-${rank}-filter`));
+
+      expect(rankButton.classes()).not.toContain('-rank-color');
+      expect(rankButton.classes()).not.toContain(rankColorClasses[rank]);
+    }
+  });
+
+  it('should display buttons without colors when a selected rank is deselected', async () => {
+    const wrapper = wrap();
+
+    const rankAButton = wrapper.find(wrappedElement('rank-RANK_A-filter'));
+    await rankAButton.trigger('click');
+    await rankAButton.trigger('click');
+
+    const rankColorClasses = {
+      RANK_D: '-d',
+      RANK_C: '-c',
+      RANK_B: '-b',
+      RANK_A: '-a',
+      RANK_S: '-s',
+    };
+    for (const rank of RANKS) {
+      const rankButton = wrapper.find(wrappedElement(`rank-${rank}-filter`));
+
+      expect(rankButton.classes()).not.toContain('-rank-color');
+      expect(rankButton.classes()).not.toContain(rankColorClasses[rank]);
     }
   });
 

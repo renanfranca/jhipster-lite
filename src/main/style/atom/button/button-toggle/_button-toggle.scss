@@ -56,13 +56,16 @@ $jhlite-button-toggle-transition-duration: 0.5s;
 
 .jhlite-button-toggle-short-name {
   display: inline-block;
+  transition: all $jhlite-button-toggle-transition-duration ease-out;
   opacity: 1;
   white-space: nowrap;
 }
 
 .jhlite-button-toggle-full-name {
   display: inline-block;
-  transition: all $jhlite-button-toggle-transition-duration 1ms ease-out;
+  transition:
+    opacity $jhlite-button-toggle-transition-duration 1ms ease-out,
+    max-width $jhlite-button-toggle-transition-duration 1ms ease-out;
   opacity: 0;
   max-width: 0;
   overflow: hidden;
@@ -76,7 +79,9 @@ $jhlite-button-toggle-transition-duration: 0.5s;
   }
 
   .jhlite-button-toggle-full-name {
-    transition: max-width 2 * $jhlite-button-toggle-transition-duration 50ms ease-in;
+    transition:
+      opacity $jhlite-button-toggle-transition-duration 1ms ease-in,
+      max-width 2 * $jhlite-button-toggle-transition-duration 1ms ease-in;
     opacity: 1;
     max-width: 300px;
   }
