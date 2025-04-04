@@ -148,7 +148,7 @@ describe('LandscapeRankModuleFilterComponent', () => {
     }
   });
 
-  it('should display buttons without colors by default', async () => {
+  it('should display buttons without colors by default', () => {
     const wrapper = wrap();
 
     const rankColorClasses = {

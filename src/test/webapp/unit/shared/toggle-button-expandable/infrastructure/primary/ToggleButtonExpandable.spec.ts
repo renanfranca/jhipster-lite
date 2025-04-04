@@ -18,7 +18,7 @@ describe('ToggleButtonExpandable', () => {
       expect(shortName.text()).toBe('S');
     });
 
-    it('should display full name when initialized as active', async () => {
+    it('should display full name when initialized as active', () => {
       const wrapper = mount(ToggleButtonExpandableVue, {
         props: {
           shortName: 'S',
