@@ -2,22 +2,12 @@
   class="jhlite-button-toggle"
   :class="buttonClasses()"
   @click="handleClick()"
-  @mouseenter="handleMouseEnter()"
-  @mouseleave="handleMouseLeave()"
   :data-testid="dataTestId"
   :title="title"
   :disabled="disabled"
 >
   <span class="jhlite-button-toggle-content">
-    <span class="jhlite-button-toggle-short-name" v-if="isShortNameVisible()" :data-testid="`short-name-${shortName}`">
-      {{ shortName }}
-    </span>
-    <span
-      class="jhlite-button-toggle-full-name"
-      :data-testid="`full-name-${shortName}`"
-      @transitionend="handleFullNameTransitionEnd($event)"
-    >
-      {{ fullName }}
-    </span>
+    <span class="jhlite-button-toggle-full-name" :data-testid="`full-name-${shortName}`"> {{ fullName }} </span>
+    <span class="jhlite-button-toggle-short-name" :data-testid="`short-name-${shortName}`"> {{ shortName }} </span>
   </span>
 </button>

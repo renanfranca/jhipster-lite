@@ -1,4 +1,4 @@
-import { defineComponent, ref } from 'vue';
+import { defineComponent } from 'vue';
 
 export default defineComponent({
   name: 'ToggleButtonExpandableVue',
@@ -34,42 +34,15 @@ export default defineComponent({
   },
   emits: ['click', 'mouseenter', 'mouseleave'],
   setup(props, { emit }) {
-    const isHovered = ref(false);
-    const fullNameVisible = ref(props.isActive);
-
     const buttonClasses = (): string => {
       return [...props.customClasses, props.isActive ? '-active' : ''].filter(Boolean).join(' ');
     };
 
-    const isShortNameVisible = (): boolean => {
-      return !fullNameVisible.value;
-    };
-
     const handleClick = (): void => emit('click');
-
-    const handleMouseEnter = (): void => {
-      isHovered.value = true;
-      emit('mouseenter');
-    };
-
-    const handleMouseLeave = (): void => {
-      isHovered.value = false;
-      emit('mouseleave');
-    };
-
-    const handleFullNameTransitionEnd = (event: TransitionEvent): void => {
-      if (event.propertyName === 'opacity') {
-        fullNameVisible.value = isHovered.value || props.isActive;
-      }
-    };
 
     return {
       buttonClasses,
-      isShortNameVisible,
       handleClick,
-      handleMouseEnter,
-      handleMouseLeave,
-      handleFullNameTransitionEnd,
     };
   },
 });
