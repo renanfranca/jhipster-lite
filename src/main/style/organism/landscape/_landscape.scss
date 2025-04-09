@@ -45,9 +45,10 @@ $jhlite-landscape-primary-alternative-color: colors.$jhlite-global-primary-alter
 
   .jhipster-landscape-rank-module-selection {
     display: flex;
-    justify-content: center;
+    justify-content: left;
     margin-left: $jhlite-landscape-padding;
     background: var(--jhlite-chip-bg-color);
+    width: 246px;
   }
 
   .jhipster-landscape-content {
